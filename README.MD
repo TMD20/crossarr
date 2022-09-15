@@ -56,10 +56,6 @@ General Guide: https://packaging.python.org/en/latest/guides/installing-using-pi
  or 
  crossarr [options] radarr [-h] [-a API] [-u URL] [-f FOLDER]
 
-Example 
-crossarr -c aconfig radarr -u url -api a key
-Take note of the order of the option it is important because of the subcommand
-
 
 options
    -h, --help            Show this help message and exit.
@@ -80,3 +76,7 @@ options
                         Names of Indexer Uses Regex to Match Names (default: null)
 
 
+## Example Usauge
+crossarr -c aconfig radarr -u url -api a key
+
+Take note of the order of the option it is important because of the subcommand
