@@ -182,13 +182,19 @@ class Sonarr():
         return self.downloadHistoryFilter(data)
     def downloadHistoryFilter(self,downloadHistory):
         grabHistory=list(filter(lambda x:x["eventType"]=="grabbed",downloadHistory))
+        uniqueTitles=set(list(map(lambda x:x["sourceTitle"],grabHistory)))
+        temp=[]
+        for ele in grabHistory:
+            if ele["sourceTitle"] in uniqueTitles:
+                temp.append(ele)
+                uniqueTitles.remove(ele["sourceTitle"])
+        if self.flag=="grabbed":
+            return grabHistory
         importHistory=list(filter(lambda x:x["eventType"]=="downloadFolderImported",downloadHistory))
         deletedHistory=list(filter(lambda x:x["eventType"]=="episodeFileDeleted",downloadHistory))
         titleSet=set(list(map(lambda x:x["sourceTitle"],importHistory))+list(map(lambda x:x["sourceTitle"],deletedHistory)))
-        if self.flag=="grabbed":
-            return grabHistory
-        else:
-            return list(filter(lambda x:x["title"] in titleSet,grabHistory))
+
+        return list(filter(lambda x:x["title"] in titleSet,grabHistory))
 
 
            

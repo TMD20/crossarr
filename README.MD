@@ -57,6 +57,8 @@ General Guide: https://packaging.python.org/en/latest/guides/installing-using-pi
  crossarr [options] radarr [-h] [-a API] [-u URL] [-f FOLDER]
 
 
+
+```
 options
    -h, --help            Show this help message and exit.
   -c CONFIG, --config CONFIG
@@ -74,6 +76,8 @@ options
                         grabbed= Releases grabbed and added to any client imported= Releases completed, and imported into library (default: imported)
   -i INDEXERS [INDEXERS ...], --indexers INDEXERS [INDEXERS ...]
                         Names of Indexer Uses Regex to Match Names (default: null)
+                        
+  ```
 
 
 ## Example Usauge

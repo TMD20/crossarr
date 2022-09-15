@@ -140,7 +140,14 @@ class Radarr():
         return downloadList
 
     def getGrabs(self, movie):
-        return self.radarr.get_movie_history(movie.get("id"), event_type="grabbed")
+        grabHistory=self.radarr.get_movie_history(movie.get("id"), event_type="grabbed")
+        uniqueTitles=set(list(map(lambda x:x["sourceTitle"],grabHistory)))
+        temp=[]
+        for ele in grabHistory:
+            if ele["sourceTitle"] in uniqueTitles:
+                temp.append(ele)
+                uniqueTitles.remove(ele["sourceTitle"])
+        return temp
 
 
     def getImported(self, movie):
