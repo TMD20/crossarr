@@ -58,6 +58,7 @@ General Guide: https://packaging.python.org/en/latest/guides/installing-using-pi
 
 Example 
 crossarr -c aconfig radarr -u url -api a key
+
 Take note of the order of the option it is important because of the subcommand
 
 ```
