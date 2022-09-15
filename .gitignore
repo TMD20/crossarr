@@ -1,0 +1,5 @@
+.vscode
+.venv
+config.json
+*pycache*
+request.cache

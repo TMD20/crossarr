@@ -1,0 +1,34 @@
+{
+  "threshold": 1,
+  "indexers": [
+    "blutopia",
+    "beyondhd",
+    "uhdbits",
+    "hdtorrents",
+    "hd-torrents",
+    "hd-space",
+    "hdspace",
+    "animebyte",
+    "asian",
+    "totheglory",
+    "ttg",
+    "chdbits",
+    "morethantv",
+    "privatehd"
+  ],
+  "prowlarrapi": "my key",
+  "prowlarrurl": "http://url",
+
+  "flag": "imported",
+  "days": 9999999999999,
+  "radarr": {
+    "api": "my key for radarr",
+    "url": "http://url",
+    "folder": "/home/main/Downloads/Seeding/Torrents/Movies"
+  },
+  "sonarr": {
+    "api": "my key for sonar",
+    "url": "http://dsds",
+    "folder": "sdsdss"
+  }
+}
