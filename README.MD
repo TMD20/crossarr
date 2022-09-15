@@ -60,7 +60,7 @@ Example
 crossarr -c aconfig radarr -u url -api a key
 Take note of the order of the option it is important because of the subcommand
 
-
+```
 options
    -h, --help            Show this help message and exit.
   -c CONFIG, --config CONFIG
@@ -78,5 +78,7 @@ options
                         grabbed= Releases grabbed and added to any client imported= Releases completed, and imported into library (default: imported)
   -i INDEXERS [INDEXERS ...], --indexers INDEXERS [INDEXERS ...]
                         Names of Indexer Uses Regex to Match Names (default: null)
+                        
+  ```
 
 
