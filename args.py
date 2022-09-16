@@ -9,7 +9,7 @@ def getArgs():
     p = ArgumentParser(prog="crossarr")
     p.default_config_files = [defaultconfigPath]
     p.add_argument("-c","--config",action=ActionConfigFile)
-    p.add_argument("-t","--threshold",type=int,default=1,help="The max size difference \% a match can hae")
+    p.add_argument("-t","--threshold",type=int,default=1,help="The max size difference \% a match can have")
     p.add_argument('-d', '--days', type=int,default=99999999999999999999,help="Max Age of a release in days")
     p.add_argument('-a', '--prowlarrapi', help="Prowlar API key")
     p.add_argument('-p', '--prowlarrurl', help="Prowlar URL")
