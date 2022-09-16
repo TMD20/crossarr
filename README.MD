@@ -53,7 +53,9 @@ General Guide: https://packaging.python.org/en/latest/guides/installing-using-pi
 
 
  crossarr [options] sonarr [-h] [-a API] [-u URL] [-f FOLDER]
+ 
  or 
+ 
  crossarr [options] radarr [-h] [-a API] [-u URL] [-f FOLDER]
 
 
