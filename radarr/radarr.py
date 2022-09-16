@@ -1,11 +1,10 @@
 
 import datetime
-import string
 import os
 import urllib.parse
 import re
-import itertools
-
+import tempfile
+import shutil
 
 
 import arrow
@@ -38,15 +37,18 @@ class Radarr():
         self.releaseTask=self.progress.add_task(f"")
         self.renderGroup=console.Group(self.progress,self.downloadTask)
         
+        
 
     def Process(self):
         self.getIndexerIDs()
+        self.tempdir=tempfile.mkdtemp()
         with console.Live(self.renderGroup) as live:
             movies=self.getMovies()
             self.progress.update(self.movieTask,total=len(movies))
             for movie in movies:
                 self.progress.update(self.movieTask,advance=1,description=f"Searching for a matching releases: {movie['title']}")
                 self.findCross_Seed(movie)
+            self.completeHandler()
     
     def printMatchData(self,match,element):
         print(match["data"]["size"],element["size"])
@@ -59,17 +61,25 @@ class Radarr():
         basename = f"[{release['indexer']}] {release['title']}.torrent"
         urlParts=urllib.parse.urlparse(release["downloadUrl"])
         # radarr may use a different url, then running machine
-        url=self.url
+        url=args.prowlarrurl
         for i in range(2,len(urlParts)):
             url=urllib.parse.urljoin(url,urlParts[i])
 
-        savePath = os.path.join(self.folder, basename)
+        tempPath = os.path.join(self.tempdir, basename)
         data = session.get(url)
 
         # Save file data to local copy
-        with open(savePath,"wb") as file:
-            file.write(data.content)
-        self.downloadTask.update(f"Saved Download to -> {savePath}")
+        try:
+            with open(tempPath,"wb") as file:
+                file.write(data.content)
+        except:
+            return
+        try:
+            savePath=os.path.join(self.folder,basename)
+            shutil.move(tempPath,savePath)
+            self.downloadTask.update(f"Saved Download to -> {savePath}")
+        except:
+            None
 
 
 
@@ -194,3 +204,10 @@ class Radarr():
         data=req.json()
         data=radarrFilter.matchDate(data,self.days,self.currDate)        
         return data
+    
+    def completeHandler(self):
+        for file in os.listdir(self.tempdir):
+            ogPath=os.path.join(self.tempdir,file)
+            newPath=os.path.join(self.folder,file)
+            shutil.move(ogPath,newPath)
+        shutil.rmtree(self.tempdir)

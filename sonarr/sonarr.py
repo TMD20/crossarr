@@ -1,10 +1,10 @@
 import args
 import datetime
-import string
 import re
-import itertools
 import os
 import urllib.parse
+import shutil
+import tempfile
 
 from pyarr import SonarrAPI
 import arrow
@@ -59,11 +59,14 @@ class Sonarr():
     def Process(self):
         self.getIndexerID()
         shows=self.getShows()
+        self.tempdir=tempfile.mkdtemp()
+
         with console.Live(self.renderGroup) as live:
             self.progress.update(self.showTask,description=f"",advance=1,total=len(shows))
             for show in shows:
                 self.progress.update(self.showTask,description=f"Searching for a matching releases: {show['title']}",advance=1)
                 self.ProcessShow(show)
+        self.completeHandler()
       
 
     def getFullSeasonReleases(self,num,show):
@@ -109,16 +112,22 @@ class Sonarr():
         basename = f"[{release['indexer']}] {release['title']}.torrent"
         urlParts=urllib.parse.urlparse(release["downloadUrl"])
         # radarr may use a different url, then running machine
-        url=self.url
+        url=args.prowlarrurl
         for i in range(2,len(urlParts)):
             url=urllib.parse.urljoin(url,urlParts[i])
 
-        savePath = os.path.join(self.folder, basename)
+        tempPath = os.path.join(self.tempdir, basename)
         data = session.get(url)
 
         # Save file data to local copy
-        with open(savePath,"wb") as file:
+        with open(tempPath,"wb") as file:
             file.write(data.content)
+        try:
+            savePath=os.path.join(self.folder,basename)
+            shutil.move(tempPath,savePath)
+            self.downloadTask.update(f"Saved Download to -> {savePath}")
+        except:
+            None
         self.downloadTask.update(f"Saved Download to -> {savePath}")
 
        
@@ -221,6 +230,12 @@ class Sonarr():
                     indexerNames.append(indexer["name"])
         self.indexerIDs= list(set(indexerIDs))
         self.indexerNames = list(set(indexerNames))
-      
+    
+    def completeHandler(self):
+        for file in os.listdir(self.tempdir):
+            ogPath=os.path.join(self.tempdir,file)
+            newPath=os.path.join(self.folder,file)
+            shutil.move(ogPath,newPath)
+        shutil.rmtree(self.tempdir)  
 
     
