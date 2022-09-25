@@ -58,18 +58,13 @@ class Base():
 
 
     def _downloadItem(self,release):
-        # build urlback, just in case radarr is in a docker or does not have the same urlbase
-        prowlarrURLParts=urllib3.util.parse_url(self.prowlarrurl)
-        downloadURLParts=urllib3.util.parse_url(release["downloadUrl"])
-        finalURL=urllib3.util.Url(prowlarrURLParts.scheme,prowlarrURLParts.auth,prowlarrURLParts.host,prowlarrURLParts.port,downloadURLParts.path,downloadURLParts.query).url
-
         basename = f"[{release['indexer']}] {release['title']}.torrent"
+        finalURL=release["downloadUrl"]
 
         data = session.get(finalURL)
         if data.status_code!=200:
             self.messageTable.add_row("Error",f"Request to {finalURL} was not succesful with status code {data.status_code}",style="red")
  
-
         savePath=os.path.join(self.folder,basename)
         with open(savePath,"wb") as file:
                 file.write(data.content)
