@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import radarr.radarr as radarrAPI
-import sonarr.sonarr as sonarrAPI
+import arr.radarr as radarrAPI
+import arr.sonarr as sonarrAPI
 import args
 
 import console
@@ -12,10 +12,10 @@ console.mainConsole.print(console.Panel(f"Looking through {args.getArgs().subcom
 
 if args.getArgs().subcommand=="sonarr":
     sonarrObj=sonarrAPI.Sonarr()
-    sonarrObj.Process()
+    sonarrObj.process()
 else:
     radarrObj=radarrAPI.Radarr()
-    radarrObj.Process()
+    radarrObj.process()
 
 
     

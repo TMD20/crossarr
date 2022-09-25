@@ -1,39 +1,47 @@
 import re
 import jellyfish
-import datetime
 from guessit import guessit
 import arrow
 
 
 
 
+
 def matchDate(inputList,maxAge,currDate):
-    # return list(filter(lambda x: (currDate-(arrow.get(x.get("publishDate"))or arrow.get(x.get("date") )).days <= maxAge, inputList)))
     return list(filter(lambda x:matchDateHelper(x,currDate,maxAge),inputList))
 def matchDateHelper(input,currDate,maxAge):
-    dateString=input.get("publishDate") or input.get("date")
+    dateString=input.get("date") or input.get("publishDate")
     itemDate=arrow.get(dateString) 
     return (currDate-itemDate).days<=maxAge
 
 def matchBySize(inputList,matchSize,threshold):
     threshold=threshold/100
     return list(filter(lambda x:(abs(matchSize-int(x["size"]))/matchSize)<=threshold,inputList))
-        
+
+def matchBySizeSeason(inputList,matchSize,threshold):
+    threshold=threshold/100
+    season=list(filter(lambda x: re.search("E[0-9][0-9]+",x["title"],re.IGNORECASE)==None, inputList))
+    return list(filter(lambda x:(abs(matchSize-int(x["size"]))/matchSize)<=threshold,season))
+def matchBySizeEpisodes(inputList,matchSize,threshold):
+    threshold=threshold/100
+    episodes=list(filter(lambda x: re.search("E[0-9][0-9]+",x["title"],re.IGNORECASE), inputList))
+    episodeSize=list(map(lambda x:int(x["size"]),episodes))
+    if (abs(matchSize-sum(episodeSize))/matchSize)<=threshold:
+        return episodes
+    return []        
 
 def matchByTitle(inputList,matchGroup,matchTitle):
     matches=[]
     matchTitle=titleCleanUp(matchTitle)
     for ele in inputList:
-        titlePercent=.95
-        eleGroup=ele.get("releaseGroup") or guessit(ele["title"]).get("release_group", "")
         eleTitle=ele["title"]
+        eleGroup = ele.get("releaseGroup") or guessit(eleTitle).get("release_group")
         eleTitle=titleCleanUp(eleTitle)
-
-        if len(matchGroup)>0 and len(eleGroup)>0:
-            if jellyfish.jaro_distance(matchGroup.lower(), eleGroup.lower()) >= .95:
-                titlePercent=.90
-        if jellyfish.jaro_distance(matchTitle, eleTitle.lower()) >= titlePercent:
-             matches.append(ele)
+        if matchGroup and eleGroup:
+            if jellyfish.jaro_distance(matchGroup.lower(), eleGroup.lower()) < .95:
+                continue
+        matches.append(ele)
+       
     return matches
 def titleCleanUp(title):
 
@@ -71,6 +79,10 @@ def matchSpecial(inputList,matchTitle):
     elif re.search("repack", matchTitle, re.IGNORECASE):
         return list(filter(lambda x: re.search("repack", x["title"], re.IGNORECASE), inputList))
     return inputList   
+
+def matchSeasonNum(inputList,matchSeason):
+    return list(filter(lambda x:guessit(x["title"]).get("season")==matchSeason,inputList))
+ 
 
 
 

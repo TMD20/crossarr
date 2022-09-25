@@ -1,5 +1,6 @@
 {
   "threshold": 1,
+  "rows":5,
   "indexers": [
     "blutopia",
     "beyondhd",
