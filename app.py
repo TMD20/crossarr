@@ -1,14 +1,9 @@
 #!/usr/bin/env python3
-import re
-
 import arr.radarr as radarrAPI
 import arr.sonarr as sonarrAPI
 import args
 import console
 import logger
-
-
-    
 
 userargs=args.getArgs()
 logger.setupLog()

@@ -1,15 +1,4 @@
-
-import datetime
-import os
-
-import re
-import tempfile
-import shutil
-
-
-
 from pyarr import RadarrAPI
-
 from guessit import guessit
 
 import arr.filter as radarrFilter

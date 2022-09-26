@@ -1,7 +1,5 @@
 from jsonargparse import ArgumentParser, ActionConfigFile
-import console
 import os
-
 
 def getArgs():
     defaultconfigPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), "config.json")
