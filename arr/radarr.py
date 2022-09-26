@@ -39,7 +39,6 @@ class Radarr(Base):
                 self.overallProgress.update(self.mediaTask,description=f"Overall Media Progress: {movie['title']}")
                 self._matchMovie(movie)
                 self.overallProgress.update(self.mediaTask,description=f"Overall Media Progress: ",advance=1)
-                break
     
     def _matchMovie(self, movie):
         downloadList = self._getDownloads(movie)
