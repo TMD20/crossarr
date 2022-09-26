@@ -42,10 +42,16 @@ class Base():
         None
     def _finalOutPut(self):      
         console.Console().print(f"\n\nFinal Statistics",style="deep_pink4")
-        console.Console().print(f"Succesful Downloads: {self.download}",style="bold")
-        console.Console().print(f"Failed Downloads: {self.downloadFails}",style="bold")
-        console.Console().print(f"Successful Request: {self.successReq}",style="bold")
-        console.Console().print(f"Failed Request: {self.errorReq}",style="bold") 
+        msg= \
+        f"""
+        Succesful Downloads: {self.download}
+        Failed Downloads: {self.downloadFails}
+        Successful Request: {self.successReq}
+        Failed Request: {self.errorReq}
+        """
+        console.Console().print(msg,style="bold")
+        console.logging.info(msg)
+     
 
         
 
