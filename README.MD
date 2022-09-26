@@ -102,4 +102,7 @@ Everything else needs to be before
 
 # Future Updates
 Support imported episodes
-Get size information from local files; I move my files to another drive, which sonarr is not aware of. However other user may have the file at the original location from sonarr.
+
+Get size information from local files; I move my files to another drive, which sonarr is not aware of. 
+
+However other user may have the file at the original location from sonarr.
