@@ -1,5 +1,6 @@
 import console
 import args
+import re
 
 userargs=args.getArgs()
 def logfilter(record):
