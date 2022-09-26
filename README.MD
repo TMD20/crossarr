@@ -96,6 +96,8 @@ options
 crossarr -c aconfig radarr -u url -api a key
 
 Take note of the order of the option it is important because of the subcommand
+Basically the only thing that should come after radarr or sonarr is the url option , and api option.
+Everything else needs to be before
 
 
 # Future Updates
