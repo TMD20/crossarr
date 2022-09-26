@@ -8,7 +8,7 @@ def getArgs():
     p = ArgumentParser(prog="crossarr")
     p.default_config_files = [defaultconfigPath]
     p.add_argument("-c","--config",action=ActionConfigFile)
-    p.add_argument('-l', '--log', help="Where to save log file",default=os.path.join(os.path.dirname(os.path.realpath(__file__)), "example.log"))
+    p.add_argument('-l', '--log', help="Where to save log file")
     p.add_argument('-v', '--loglevel', help="what level to set log to flexible case-senstivity main options are [DEBUG,INFO,OFF]",choices=["Debug","DEBUG","debug","INFO","info","Info","off","OFF","Off"],default="OFF")
 
     p.add_argument("-r","--rows",help="Advanced Feature to set how many table rows to render for Messages",default=5)

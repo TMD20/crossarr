@@ -1,6 +1,7 @@
 import console
 import args
 import re
+import os
 
 userargs=args.getArgs()
 def logfilter(record):
@@ -15,7 +16,10 @@ def nologfilter(record):
     
 def setupLog():
     userargs=args.getArgs()
-
+    if userargs.get("sonarr") and not userargs.get("log"):
+        userargs.log=os.path.join(os.path.dirname(os.path.realpath(__file__)), "sonarr.log")
+    else:
+        userargs.log=os.path.join(os.path.dirname(os.path.realpath(__file__)), "radarr.log")
 
     if userargs.loglevel.upper()!="OFF":
         console.logging.getLogger(name=None).filter=logfilter
