@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
+import re
 
 import arr.radarr as radarrAPI
 import arr.sonarr as sonarrAPI
 import args
-
 import console
+import logger
 
 
+    
 
-console.mainConsole.print(console.Panel(f"Looking through {args.getArgs().subcommand} for matches",style=console.normal_header_style))
+userargs=args.getArgs()
+logger.setupLog()
+console.mainConsole.print(console.Panel(f"Looking through {userargs.subcommand} for matches",style=console.normal_header_style))
 
-if args.getArgs().subcommand=="sonarr":
+if userargs.subcommand=="sonarr":
     sonarrObj=sonarrAPI.Sonarr()
     sonarrObj.process()
 else:

@@ -42,7 +42,8 @@ class Base():
         None
     def _finalOutPut(self):      
         console.Console().print(f"\n\nFinal Statistics",style="deep_pink4")
-        console.Console().print(f"Total Downloads: {self.download}",style="bold")
+        console.Console().print(f"Succesful Downloads: {self.download}",style="bold")
+        console.Console().print(f"Failed Downloads: {self.downloadFails}",style="bold")
         console.Console().print(f"Successful Request: {self.successReq}",style="bold")
         console.Console().print(f"Failed Request: {self.errorReq}",style="bold") 
 
@@ -58,19 +59,32 @@ class Base():
 
 
     def _downloadItem(self,release):
+        self._rowHelper()
         basename = f"[{release['indexer']}] {release['title']}.torrent"
+        basename=self.titleFixer(basename)
         finalURL=release["downloadUrl"]
-
         data = session.get(finalURL)
         if data.status_code!=200:
-            self.messageTable.add_row("Error",f"Request to {finalURL} was not succesful with status code {data.status_code}",style="red")
- 
-        savePath=os.path.join(self.folder,basename)
-        with open(savePath,"wb") as file:
-                file.write(data.content)
-        self.download=self.download+1
-        self._rowHelper()
-        self.messageTable.add_row("Download",f"Saved Download to -> {savePath}",style="green")
+            msg=f"Request to {finalURL} was not succesful with status code {data.status_code}"
+            self.messageTable.add_row("Error",msg,style="red")
+            console.logging.error(msg)
+            self.downloadFails=self.downloadFails+1
+        else:
+            try: 
+                savePath=os.path.join(self.folder,basename)
+                with open(savePath,"wb") as file:
+                        file.write(data.content)  
+                msg=f"Saved Download to -> {savePath}"
+                self.messageTable.add_row("Download",msg,style="green")
+                console.logging.info(msg)
+                self.download=self.download+1
+            except:
+                msg=f"Could not Saved Download to -> {savePath}"
+                self.messageTable.add_row("Error",msg,style="RED")
+                console.logging.error(msg)
+                self.downloadFails=self.downloadFails+1
+      
+       
 
 
       
@@ -78,6 +92,10 @@ class Base():
     def _titleSimplify(self,title):
         title=os.path.basename(title)
         title=os.path.splitext(title)[0]
+        return title
+    
+    def titleFixer(self,title):
+        title=re.sub("/","_",title)
         return title
 
 
@@ -140,6 +158,7 @@ class Base():
         self.successReq=0
         self.errorReq=0
         self.download=0
+        self.downloadFails=0
 
     def _setMessagesTable(self):
         #Message table

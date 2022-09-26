@@ -37,6 +37,7 @@ class Sonarr(Base):
                 Returns:
                         None
         '''
+    
         shows=self._getShows()
         with self.live:
             self.overallProgress.update(self.mediaTask,description=f"Overall Media Progress:",total=len(shows))
@@ -158,12 +159,16 @@ class Sonarr(Base):
         req=self.session.get(url,params=params)
         if req.status_code!=200:
             self._rowHelper()
-            self.messageTable.add_row("Error",f"Req to {req.url} was not successful with status code {req.status_code}",style="red")
+            msg=f"Req to {req.url} was not successful with status code {req.status_code}"
+            self.messageTable.add_row("Error",msg,style="red")
+            console.logging.error(msg)
             self.errorReq=self.errorReq+1
             return [] 
         else:
             self._rowHelper()
-            self.messageTable.add_row("Request",f"Req to {req.url} was successful with status code {req.status_code}",style="green")
+            msg=f"Req to {req.url} was successful with status code {req.status_code}"
+            self.messageTable.add_row("Request",msg,style="green")
+            console.logging.info(msg)
             self.successReq=self.successReq+1
         data=req.json()
         data=sonarrFilter.matchSeasonNum(data,num)
@@ -183,8 +188,11 @@ class Sonarr(Base):
             if ele["sourceTitle"] in uniqueTitles:
                 temp.append(ele)
                 uniqueTitles.remove(ele["sourceTitle"])
+        grabHistory=temp
         if self.flag=="grabbed":
             return grabHistory
+
+        
         importHistory=list(filter(lambda x:x["eventType"]=="downloadFolderImported",downloadHistory))
         deletedHistory=list(filter(lambda x:x["eventType"]=="episodeFileDeleted",downloadHistory))
         titleSet=set(list(map(lambda x:x["sourceTitle"],importHistory))+list(map(lambda x:x["sourceTitle"],deletedHistory)))

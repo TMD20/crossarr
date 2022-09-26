@@ -69,6 +69,14 @@ options
                         Path to a configuration file.
   --print_config [={comments,skip_null,skip_default}+]
                         Print the configuration after applying all other arguments and exit.
+  -l LOG, --log LOG     Where to save log file (default:
+                        /path/to/pythonfile/example.log)
+  -v {Debug,DEBUG,debug,INFO,info,Info,off,OFF,Off}, --loglevel {Debug,DEBUG,debug,INFO,info,Info,off,OFF,Off}
+                      what level to set log to flexible case-senstivity main options are [DEBUG,INFO,OFF]
+                      (default: info)
+  -r ROWS, --rows ROWS  Advanced Feature to set how many table rows to render
+                        for Messages (default: 5)
+
   -t THRESHOLD, --threshold THRESHOLD
                         The max size difference \% a match can hae (type: int, default: 1)
   -d DAYS, --days DAYS  Max Age of a release in days (type: int, default: 99999999999999999999)

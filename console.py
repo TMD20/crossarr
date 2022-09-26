@@ -9,6 +9,7 @@ from rich.table import Column,Table
 from rich.layout import Layout
 from rich import print
 
+
 name_column = TextColumn("{task.name}", table_column=Column(ratio=1))
 desc_column = TextColumn("{task.description}", table_column=Column(ratio=1))
 progressTable = Progress(name_column, desc_column, expand=True)
@@ -20,6 +21,10 @@ mainConsole= Console()
 error_style = Style(color="red", blink=True, bold=True)
 normal_header_style = Style(color="green", blink=False, bold=True)
 normal_style = Style(color="magenta")
+
+
+#logging
+import logging
 
 
 

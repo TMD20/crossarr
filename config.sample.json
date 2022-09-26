@@ -1,6 +1,8 @@
 {
   "threshold": 1,
-  "rows":5,
+  "rows": 5,
+  "logfile": "example.txt",
+  "loglevel": "DEBUG",
   "indexers": [
     "blutopia",
     "beyondhd",

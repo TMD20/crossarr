@@ -14,6 +14,7 @@ from guessit import guessit
 
 import arr.filter as radarrFilter
 from arr.base import Base
+import console
 
 
 class Radarr(Base):
@@ -129,7 +130,18 @@ class Radarr(Base):
         params={"apikey":self.args.prowlarrapi,"indexerIDs":self.indexerIDs,"query":query,"limit":1000,"categories":"2000","type":"movie"}
         req=self.session.get(url,params=params)
         if req.status_code!=200:
+            self._rowHelper()
+            msg=f"Req to {req.url} was not successful with status code {req.status_code}"
+            self.messageTable.add_row("Error",msg,style="red")
+            console.logging.error(msg)
+            self.errorReq=self.errorReq+1
             return []
+        else:
+            self._rowHelper()
+            msg=f"Req to {req.url} was successful with status code {req.status_code}"
+            self.messageTable.add_row("Request",msg,style="green")
+            console.logging.info(msg)
+            self.successReq=self.successReq+1
         data=req.json()
         data=radarrFilter.matchDate(data,self.days,self.currDate)        
         return data
