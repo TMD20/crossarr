@@ -15,7 +15,7 @@ def setupConfig(p):
         p.default_config_files = [defaultconfigPath]
 def setupDir(r):
     if Docker_KEY:
-        r.log=f"/config/{r.subcommand}.log"
+        r.log=f"/logs/{r.subcommand}.log"
         r[r.subcommand].folder="/output"
     return r
   

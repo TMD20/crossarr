@@ -9,6 +9,7 @@ COPY requirements.txt /app/requirements.txt
 RUN pip3.10 install -r /app/requirements.txt
 
 RUN mkdir /config
+RUN mkdir /logs
 
 
 WORKDIR /app
