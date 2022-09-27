@@ -99,6 +99,34 @@ Take note of the order of the option it is important because of the subcommand
 Basically the only thing that should come after radarr or sonarr is the url option , and api option.
 Everything else needs to be before
 
+# Docker
+
+## Docker Run
+
+sudo docker run -it --rm -v /home/user/config.json:/config/config.json -v /home/user/logs/:/logs --name crossarr ghcr.io/tmd20/crossarr:main sonarr
+
+## Docker Compose
+As a general note you need to make an empty file/user an existing one if you want to pass docker a file, otherwise it will make a directory
+```
+  crossarr:
+      image: ghcr.io/tmd20/crossarr:main
+      container_name: crossarr
+      environment:
+        - TZ=enter for valid logs
+      volumes:
+          - /home/torrents/crossarr/config.json:/config/config.json
+          - /home/torrents/crossarr/logs/radarr2160.log:/logs/radarr.log
+          - /home/Downloads/Torrents:/output
+      command: radarr
+      restart: always
+      networks:
+        - mynetwork
+
+```
+
+
+
+
 
 # Future Updates
 Support imported episodes
