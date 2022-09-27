@@ -13,15 +13,13 @@ def setupConfig(p):
     else:
         defaultconfigPath ="/config/config.json"
         p.default_config_files = [defaultconfigPath]
+    return p
 def setupDir(r):
     if Docker_KEY:
         r.log=f"/logs/{r.subcommand}.log"
         r[r.subcommand].folder="/output"
     return r
   
-        
-def verifyArgs(r):
-    print(r)
 
 def getArgs():
     p = ArgumentParser(prog="crossarr")
