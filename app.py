@@ -11,7 +11,7 @@ userargs=args.getArgs()
 
 
 
-print(userargs)
+
 logger.setupLog()
 console.mainConsole.print(console.Panel(f"Looking through {userargs.subcommand} for matches",style=console.normal_header_style))
 #Create Folder for log and torrents
