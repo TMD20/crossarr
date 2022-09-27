@@ -104,9 +104,9 @@ Everything else needs to be before
 All Paths are hardcoded when running within docker
 | Name          | Container Location          
 | ------------- |:-------------:| 
-| logfiles      | /logs
+| logs      | /logs
 | config        | /config/config.json|   
-| torrent files | /output      |
+| torrents | /output      |
 
 
 ## Docker Run
