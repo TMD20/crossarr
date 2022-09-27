@@ -67,7 +67,7 @@ def getArgs():
         raise jsonargparse.ParserError(f"{r.subcommand}.folder","can't be null")
     if not subspace.url:
         raise jsonargparse.ParserError(f"{r.subcommand}.url","can't be null")    
-    return setupLog(r)
+    return setupDir(r)
     
   
     
