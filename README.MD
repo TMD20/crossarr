@@ -96,8 +96,13 @@ options
 crossarr -c aconfig radarr -u url -api a key
 
 Take note of the order of the option it is important because of the subcommand
+Basically the only thing that should come after radarr or sonarr is the url option , and api option.
+Everything else needs to be before
 
 
 # Future Updates
 Support imported episodes
-Get size information from local files; I move my files to another drive, which sonarr is not aware of. However other user may have the file at the original location from sonarr.
+
+Get size information from local files; I move my files to another drive, which sonarr is not aware of. 
+
+However other user may have the file at the original location from sonarr.
