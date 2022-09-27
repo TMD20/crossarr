@@ -13,10 +13,10 @@ def setupConfig(p):
     else:
         defaultconfigPath ="/config/config.json"
         p.default_config_files = [defaultconfigPath]
-    return p
-def setupLog(r):
+def setupDir(r):
     if Docker_KEY:
         r.log=f"/config/{r.subcommand}.log"
+        r[r.subcommand].folder="/output"
     return r
   
         
