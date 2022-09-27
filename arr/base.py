@@ -9,7 +9,7 @@ session = requests_cache.CachedSession(
     'request.cache',expire_after=datetime.timedelta(days=1))
 
 
-import args
+import setup.args as args
 import console
 
 class Base():

@@ -6,3 +6,4 @@ request.cache
 *.log
 *.text
 *.txt
+*.json
