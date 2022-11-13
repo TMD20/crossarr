@@ -101,14 +101,6 @@ Everything else needs to be before
 
 # Docker
 
-All Paths are hardcoded when running within docker
-| Name          | Container Location          
-| ------------- |:-------------:| 
-| logs      | /logs
-| config        | /config/config.json|   
-| torrents | /output      |
-
-
 ## Docker Run
 
 sudo docker run -it --rm -v /home/user/config.json:/config/config.json -v /home/user/logs/:/logs --name crossarr ghcr.io/tmd20/crossarr:main sonarr

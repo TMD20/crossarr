@@ -7,7 +7,7 @@ import pathlib
 Docker_KEY = os.environ.get('CROSSARR_DOCKER', False)
 def setupConfig(p):
     if not Docker_KEY:
-        defaultconfigPath = os.path.join(pathlib.Path(os.path.realpath(__file__)).parents[1], "config.json")
+        defaultconfigPath = os.path.join(pathlib.Path(os.path.realpath(__file__)).parents[1],"config" ,"config.json")
         p.default_config_files = [defaultconfigPath]
         p.add_argument("-c","--config",action=ActionConfigFile)
     else:
