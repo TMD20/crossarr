@@ -25,7 +25,7 @@ def post(r):
     setupLock(r)
     return r
 def setupLogs(r):
-    clientname=os.environ.get('clientname') or r.log or {r.subcommand}.log
+    clientname=os.environ.get('CROSSARR_CLIENT') or r.log or {r.subcommand}.log
     r.log=f"./logs/{clientname}"
     return r
 def setupOutput(r):
@@ -35,10 +35,15 @@ def setupOutput(r):
 def setupLock(r):
     r.lock= os.path.join(pathlib.Path(os.path.realpath(__file__)).parents[1],r.lock)
     return r
+def getDefaultInterval():
+    if os.environ.get('CROSSARR_INTERVAL'):
+        return int(os.environ.get('CROSSARR_INTERVAL'))
+    return 0
 
 def getArgs():
     p = ArgumentParser(prog="crossarr")
     p=setupConfig(p)
+    
   
     p.add_argument('-l', '--log', help="name of log file")
     p.add_argument('-v', '--loglevel', help="what level to set log to flexible case-senstivity main options are [DEBUG,INFO,OFF]",choices=["Debug","DEBUG","debug","INFO","info","Info","off","OFF","Off"],default="OFF")
@@ -55,7 +60,7 @@ def getArgs():
     """
     )
     p.add_argument("-lk","--lock",default="crossarr.lock",help="File Lock to prevent multiple instances")
-    p.add_argument("-it","--interval",default=0,help="Run the script every x minutes, 0 turns off",type=interval,metavar="[0-44640]")
+    p.add_argument("-it","--interval",default=getDefaultInterval(),help="Run the script every x minutes, 0 turns off",type=interval,metavar="[0-44640]")
 
     p.add_argument("-i",'--indexers', nargs="+",help="Names of Indexer\nUses Regex to Match Names")
 
