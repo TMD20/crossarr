@@ -88,6 +88,13 @@ options
                         grabbed= Releases grabbed and added to any client imported= Releases completed, and imported into library (default: imported)
   -i INDEXERS [INDEXERS ...], --indexers INDEXERS [INDEXERS ...]
                         Names of Indexer Uses Regex to Match Names (default: null)
+  -lk LOCK, --lock LOCK
+                        File Lock to prevent multiple instances (default:
+                        crossarr.lock)
+  -it [0-44640], --interval [0-44640]
+                        Run the script every x minutes, 0 turns off (type:
+                        interval, default: 0)
+                        
                         
   ```
 
