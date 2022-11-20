@@ -134,8 +134,9 @@ Third interval is at 2 hours. At this time program should be done running, so th
 
 | VAR  | DESC |
 | ------------- | ------------- |
+| TZ|Timezone example:America/Belem |
 | CROSSARR_CLIENT|Name used for outputs i.e logfile  |
-| CROSSARR_INTERVAL | value for --interval arg  |
+| CROSSARR_INTERVAL | Value for --interval arg  |
 
 
 
