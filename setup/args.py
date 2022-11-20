@@ -27,7 +27,7 @@ def post(r):
 def setupLogFile(r):
     name=os.environ.get('CROSSARR_CLIENT') or r.log or f"{r.subcommand}.log"
     if Docker_KEY:
-        r.log=os.path.join("logs",name)
+        r.log=os.path.join("/logs",name)
     else:
         r.log=os.path.join(pathlib.Path(os.path.realpath(__file__)).parents[1],"logs",name)
     print(r.log,Docker_KEY)
