@@ -165,13 +165,8 @@ As a general note you need to make an empty file/user an existing one if you wan
       environment:
         - TZ=enter for valid logs
       volumes:
-<<<<<<< HEAD
-          - /home/torrents/crossarr/config.json:/config/config.json
-          - /home/torrents/crossarr/logs/radarr2160.log:/logs/radarr.log
-=======
           - /home/torrents/crossarr/config.json:/config
           - /home/torrents/crossarr/logs/:/logs/
->>>>>>> origin/scheduler
           - /home/Downloads/Torrents:/output
       command: radarr
       restart: always
