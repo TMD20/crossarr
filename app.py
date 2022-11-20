@@ -18,9 +18,9 @@ def run_threaded(job_func,userargs):
     job_thread.start()
 
 
-def run(userargs):
+def run(userargs,block=False):
     try:
-        with portalocker.Lock(userargs.lock,fail_when_locked=True, timeout=1000) as fh:
+        with portalocker.Lock(userargs.lock,fail_when_locked=block, timeout=1000) as fh:
             console.mainConsole.print(console.Panel(f"Looking through {userargs.subcommand} for matches",style=console.normal_header_style))
             #Create Folder for log and torrents
             if userargs.subcommand=="sonarr":
@@ -46,14 +46,15 @@ def main():
 
     userargs=args.getArgs()
     if userargs.interval>0:
-        console.mainConsole.print(console.Panel(f"Running Every {userargs.interval} Minutes",style=console.normal_header_style))
+        console.logging.info(f"Running Every {userargs.interval} Minutes")
         schedule.every(userargs.interval).minutes.do(run_threaded,run,userargs=userargs)
         schedule.run_all()
         while True:
             schedule.run_pending()
             time.sleep(1)
     else:
-        run(userargs)
+        console.logging.info(f"Running Program Once")
+        run(userargs,block=True)
 
 
 
