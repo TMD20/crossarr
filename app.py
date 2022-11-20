@@ -43,6 +43,7 @@ def run(userargs,block=False):
        #probably a crash
         else:
             print(E)
+            console.logging.info(E)
             lock=os.path.join(defaults.getHomeDir(),f"{userargs.clientname}.lock")
             if os.path.exists(lock):
                 os.remove(lock)
