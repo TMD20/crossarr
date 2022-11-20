@@ -69,8 +69,9 @@ options
                         Path to a configuration file.
   --print_config [={comments,skip_null,skip_default}+]
                         Print the configuration after applying all other arguments and exit.
-  -l LOG, --log LOG     Where to save log file (default:
-                        /path/to/pythonfile/example.log)
+  -n CLIENTNAME, --clientname CLIENTNAME
+                        Name of client use for logfile/lockfile sonarr or
+                        raddarr use if not set (default: null)
   -v {Debug,DEBUG,debug,INFO,info,Info,off,OFF,Off}, --loglevel {Debug,DEBUG,debug,INFO,info,Info,off,OFF,Off}
                       what level to set log to flexible case-senstivity main options are [DEBUG,INFO,OFF]
                       (default: info)
@@ -88,9 +89,6 @@ options
                         grabbed= Releases grabbed and added to any client imported= Releases completed, and imported into library (default: imported)
   -i INDEXERS [INDEXERS ...], --indexers INDEXERS [INDEXERS ...]
                         Names of Indexer Uses Regex to Match Names (default: null)
-  -lk LOCK, --lock LOCK
-                        File Lock to prevent multiple instances (default:
-                        crossarr.lock)
   -it [0-44640], --interval [0-44640]
                         Run the script every x minutes, 0 turns off (type:
                         interval, default: 0)
@@ -110,7 +108,7 @@ Everything else needs to be before
 
 ## Interval
 
-Only 1 instance can run per lock file name, please change if multiple instances desired
+Only 1 instance can run per lock file name, change --clientname if you want to run instance at same time
 
 If instance is running and next run interval time passes, that interval will be skipped. 
 Program will have to wait for next interval when it finishes
@@ -125,8 +123,10 @@ First run will be at 0
 Since second interval is at 60 minutes and program is still running that will be skipped
 Third interval is at 2 hours. At this time program should be done running, so this will be ran
 
+## LogFiles
 
-
+Logfiles are saved in the logs directory. Within the same folder the program is stored
+Alternately when using docker /logs folder is used to set were to mount the folder on host
 
 # Docker
 
@@ -135,7 +135,7 @@ Third interval is at 2 hours. At this time program should be done running, so th
 | VAR  | DESC |
 | ------------- | ------------- |
 | TZ|Timezone example:America/Belem |
-| CROSSARR_CLIENT|Name used for outputs i.e logfile  |
+| CROSSARR_CLIENT|value for --clientname arg|
 | CROSSARR_INTERVAL | Value for --interval arg  |
 
 

@@ -11,6 +11,7 @@ import time
 import threading
 import os
 
+import setup.defaults as defaults
 
 
 def run_threaded(job_func,userargs):
@@ -20,7 +21,7 @@ def run_threaded(job_func,userargs):
 
 def run(userargs,block=False):
     try:
-        with portalocker.Lock(userargs.lock,fail_when_locked=block, timeout=1000) as fh:
+        with portalocker.Lock(os.path.join(defaults.getHomeDir(),f"{userargs.clientname}.lock"),fail_when_locked=block, timeout=1000) as fh:
             console.mainConsole.print(console.Panel(f"Looking through {userargs.subcommand} for matches",style=console.normal_header_style))
             #Create Folder for log and torrents
             if userargs.subcommand=="sonarr":
