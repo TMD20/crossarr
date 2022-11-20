@@ -139,6 +139,14 @@ Third interval is at 2 hours. At this time program should be done running, so th
 | CROSSARR_INTERVAL | Value for --interval arg  |
 
 
+## DOCKER PATHS
+
+| DIR| DESC |
+| ------------- | ------------- |
+| /logs|Directory for logfiles |
+| /output|Directory for storing torrent files |
+
+
 
 ## Docker Run
 ```
