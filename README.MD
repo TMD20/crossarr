@@ -147,6 +147,8 @@ Third interval is at 2 hours. At this time program should be done running, so th
 | /output|Directory for storing torrent files |
 | /config|Directory with config.json|
 
+## PASSING ARGS
+use the command property of docker run or compose to pass args
 
 ## Docker Run
 ```
