@@ -30,7 +30,6 @@ def setupLogFile(r):
         r.log=os.path.join("/logs",name)
     else:
         r.log=os.path.join(pathlib.Path(os.path.realpath(__file__)).parents[1],"logs",name)
-    print(r.log,Docker_KEY)
     return r
 def setupOutput(r):
     if Docker_KEY:
