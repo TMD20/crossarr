@@ -107,6 +107,27 @@ Take note of the order of the option it is important because of the subcommand
 Basically the only thing that should come after radarr or sonarr is the url option , and api option.
 Everything else needs to be before
 
+
+## Interval
+
+Only 1 instance can run per lock file name, please change if multiple instances desired
+
+If instance is running and next run interval time passes, that interval will be skipped. 
+Program will have to wait for next interval when it finishes
+
+### Example
+
+#### Times
+* Interval:60 Minutes
+* Runtime: 1HR 30 Minutes
+
+First run will be at 0
+Since second interval is at 60 minutes and program is still running that will be skipped
+Third interval is at 2 hours. At this time program should be done running, so this will be ran
+
+
+
+
 # Docker
 
 ## Docker Run
@@ -129,8 +150,9 @@ As a general note you need to make an empty file/user an existing one if you wan
       restart: always
       networks:
         - mynetwork
-
 ```
+
+
 
 
 
