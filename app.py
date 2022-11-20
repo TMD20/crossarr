@@ -5,31 +5,71 @@ import setup.args as args
 import console
 import setup.logger as logger
 import pathlib
+import portalocker
+import schedule
+import time
+import threading
+import os
 
-userargs=args.getArgs()
-
-
-
-
-
-logger.setupLog()
-console.mainConsole.print(console.Panel(f"Looking through {userargs.subcommand} for matches",style=console.normal_header_style))
-#Create Folder for log and torrents
+import setup.defaults as defaults
 
 
+def run_threaded(job_func,userargs):
+    job_thread = threading.Thread(target=job_func,args=[userargs])
+    job_thread.start()
 
 
-if userargs.subcommand=="sonarr":
-    pathlib.Path(userargs.sonarr.folder).mkdir(parents=True, exist_ok=True)
-    sonarrObj=sonarrAPI.Sonarr()
-    sonarrObj.process()
-else:
-    pathlib.Path(userargs.radarr.folder).mkdir(parents=True, exist_ok=True)
-    radarrObj=radarrAPI.Radarr()
-    radarrObj.process()
+def run(userargs,block=False):
+    try:
+        with portalocker.Lock(os.path.join(defaults.getHomeDir(),f"{userargs.clientname}.lock"),fail_when_locked=block, timeout=1000) as fh:
+            console.logging.info(f"Start RUN")
+            console.mainConsole.print(console.Panel(f"Looking through {userargs.subcommand} for matches",style=console.normal_header_style))
+            #Create Folder for log and torrents
+            if userargs.subcommand=="sonarr":
+                pathlib.Path(userargs.sonarr.folder).mkdir(parents=True, exist_ok=True)
+                sonarrObj=sonarrAPI.Sonarr()
+                sonarrObj.process()
+            else:
+                pathlib.Path(userargs.radarr.folder).mkdir(parents=True, exist_ok=True)
+                radarrObj=radarrAPI.Radarr()
+                radarrObj.process()
+            console.logging.info(f"Finish RUN")
+
+    except Exception as E:
+        if isinstance(E,portalocker.exceptions.AlreadyLocked): 
+            #Fix Later to use rich if possible
+            print(E)
+            console.logging.info(str(E))
+       #probably a crash
+        else:
+            print(E)
+            console.logging.info(E)
+            lock=os.path.join(defaults.getHomeDir(),f"{userargs.clientname}.lock")
+            if os.path.exists(lock):
+                os.remove(lock)
+            console.logging.info(f"Finish RUN")
+
+      
+def main():
+    logger.setupLogging()
+
+    userargs=args.getArgs()
+    if userargs.interval>0:
+        console.logging.info(f"Running Every {userargs.interval} Minutes")
+        schedule.every(userargs.interval).minutes.do(run_threaded,run,userargs=userargs)
+        schedule.run_all()
+        while True:
+            schedule.run_pending()
+            time.sleep(1)
+    else:
+        console.logging.info(f"Running Program Once")
+        run(userargs,block=True)
 
 
-    
+
+if __name__ == '__main__':
+    main()
+ 
 
 
 

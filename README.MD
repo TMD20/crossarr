@@ -69,8 +69,9 @@ options
                         Path to a configuration file.
   --print_config [={comments,skip_null,skip_default}+]
                         Print the configuration after applying all other arguments and exit.
-  -l LOG, --log LOG     Where to save log file (default:
-                        /path/to/pythonfile/example.log)
+  -n CLIENTNAME, --clientname CLIENTNAME
+                        Name of client use for logfile/lockfile sonarr or
+                        raddarr use if not set (default: null)
   -v {Debug,DEBUG,debug,INFO,info,Info,off,OFF,Off}, --loglevel {Debug,DEBUG,debug,INFO,info,Info,off,OFF,Off}
                       what level to set log to flexible case-senstivity main options are [DEBUG,INFO,OFF]
                       (default: info)
@@ -78,7 +79,7 @@ options
                         for Messages (default: 5)
 
   -t THRESHOLD, --threshold THRESHOLD
-                        The max size difference \% a match can hae (type: int, default: 1)
+                        The max size difference \% a match can have (type: int, default: 1)
   -d DAYS, --days DAYS  Max Age of a release in days (type: int, default: 99999999999999999999)
   -a PROWLARRAPI, --prowlarrapi PROWLARRAPI
                         Prowlar API key (default: null)
@@ -88,23 +89,73 @@ options
                         grabbed= Releases grabbed and added to any client imported= Releases completed, and imported into library (default: imported)
   -i INDEXERS [INDEXERS ...], --indexers INDEXERS [INDEXERS ...]
                         Names of Indexer Uses Regex to Match Names (default: null)
+  -it [0-44640], --interval [0-44640]
+                        Run the script every x minutes, 0 turns off (type:
+                        interval, default: 0)
+                        
                         
   ```
 
 
 ## Example Usage
-crossarr -c aconfig radarr -u url -api a key
-
+```
+crossarr -c config radarr -u url -api a key
+```
 Take note of the order of the option it is important because of the subcommand
 Basically the only thing that should come after radarr or sonarr is the url option , and api option.
 Everything else needs to be before
 
+
+## Interval
+
+Only 1 instance can run per lock file name, change --clientname if you want to run instance at same time
+
+If instance is running and next run interval time passes, that interval will be skipped. 
+Program will have to wait for next interval when it finishes
+
+Max Value:44640 Minutes=31 days
+
+### Example
+
+#### Times
+* Interval:60 Minutes
+* Runtime: 1HR 30 Minutes
+
+First run will be at 0
+Since second interval is at 60 minutes and program is still running that will be skipped
+Third interval is at 2 hours. At this time program should be done running, so this interval will be ran
+
+## LogFiles
+
+Logfiles are saved in the logs directory. Within the same folder the program is stored
+Alternately when using docker /logs folder is used to set were to mount the folder on host
+
 # Docker
 
+## ENV
+
+| VAR  | DESC |
+| ------------- | ------------- |
+| TZ|Timezone example:America/Belem |
+| CROSSARR_CLIENT|value for --clientname arg|
+| CROSSARR_INTERVAL | Value for --interval arg  |
+
+
+## DOCKER PATHS
+
+| DIR| DESC |
+| ------------- | ------------- |
+| /logs|Directory for logfiles |
+| /output|Directory for storing torrent files |
+| /config|Directory with config.json|
+
+## PASSING ARGS
+use the command property of docker run or compose to pass args
+
 ## Docker Run
-
-sudo docker run -it --rm -v /home/user/config.json:/config/config.json -v /home/user/logs/:/logs --name crossarr ghcr.io/tmd20/crossarr:main sonarr
-
+```
+sudo docker run -it --rm -v /home/user/config.json:/config/ -v /home/user/logs/:/logs --name crossarr ghcr.io/tmd20/crossarr:main sonarr
+```
 ## Docker Compose
 As a general note you need to make an empty file/user an existing one if you want to pass docker a file, otherwise it will make a directory
 ```
@@ -114,15 +165,22 @@ As a general note you need to make an empty file/user an existing one if you wan
       environment:
         - TZ=enter for valid logs
       volumes:
+<<<<<<< HEAD
           - /home/torrents/crossarr/config.json:/config/config.json
           - /home/torrents/crossarr/logs/radarr2160.log:/logs/radarr.log
+=======
+          - /home/torrents/crossarr/config.json:/config
+          - /home/torrents/crossarr/logs/:/logs/
+>>>>>>> origin/scheduler
           - /home/Downloads/Torrents:/output
       command: radarr
       restart: always
       networks:
         - mynetwork
-
 ```
+
+
+
 
 
 
