@@ -48,7 +48,7 @@ def getArgs():
     imported= Releases completed, and imported into library
     """
     )
-    p.add_argument("-it","--interval",default=5,help="Run the script every x minutes, 0 turns off",type=interval,metavar="[0-44640]")
+    p.add_argument("-it","--interval",default=defaults.getDefaultInterval(),help="Run the script every x minutes, 0 turns off",type=interval,metavar="[0-44640]")
     p.add_argument("-i",'--indexers', nargs="+",help="Names of Indexer\nUses Regex to Match Names")
 
     radarr=ArgumentParser()
