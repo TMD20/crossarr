@@ -5,12 +5,14 @@ from rich.progress import Progress,TextColumn,BarColumn,TaskProgressColumn
 from rich.table import Table
 from rich import print
 from rich.live import Live
-import logging
+
 
 mainConsole= Console()
 normal_header_style = Style(color="green", blink=False, bold=True)
 
 
+#logging
+import logging
 
 
 
