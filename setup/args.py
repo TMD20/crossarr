@@ -20,13 +20,16 @@ def setupConfig(p):
     return p
 
 def post(r):
-    setupLogs(r)
+    setupLogFile(r)
     setupOutput(r)
     setupLock(r)
     return r
-def setupLogs(r):
-    clientname=os.environ.get('CROSSARR_CLIENT') or r.log or {r.subcommand}.log
-    r.log=f"./logs/{clientname}"
+def setupLogFile(r):
+    name=os.environ.get('CROSSARR_CLIENT') or r.log or f"{r.subcommand}.log"
+    if Docker_KEY:
+        r.log=os.path.join(name)
+    else:
+        r.log=os.path.join(pathlib.Path(os.path.realpath(__file__)).parents[1],name)
     return r
 def setupOutput(r):
     if Docker_KEY:
