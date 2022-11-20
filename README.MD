@@ -131,8 +131,6 @@ As a general note you need to make an empty file/user an existing one if you wan
 # Future Updates
 Support imported episodes
 
-* Get size information from local files; I move my files to another drive, which sonarr is not aware of. 
+Get size information from local files; I move my files to another drive, which sonarr is not aware of. 
+
 However other user may have the file at the original location from sonarr.
-* support scheduling with docker right now it only runs once it should be a daemon that runs at a interval
-
-
