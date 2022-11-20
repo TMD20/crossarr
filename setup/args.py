@@ -31,9 +31,7 @@ def postSetup(r):
 def getArgs():
     p = ArgumentParser(prog="crossarr")
     p=setupConfig(p)
- 
-    
-  
+
     p.add_argument('-n', '--clientname', help="Name of client use for logfile/lockfile\nsonarr or raddarr use if not set",required=False)
     p.add_argument('-v', '--loglevel', help="what level to set log to flexible case-senstivity main options are [DEBUG,INFO,OFF]",type=restricted_string_type('LOG Names', '(off|debug|info)'),default="OFF")
     p.add_argument("-r","--rows",help="Advanced Feature to set how many table rows to render for Messages")

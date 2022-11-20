@@ -79,7 +79,7 @@ options
                         for Messages (default: 5)
 
   -t THRESHOLD, --threshold THRESHOLD
-                        The max size difference \% a match can hae (type: int, default: 1)
+                        The max size difference \% a match can have (type: int, default: 1)
   -d DAYS, --days DAYS  Max Age of a release in days (type: int, default: 99999999999999999999)
   -a PROWLARRAPI, --prowlarrapi PROWLARRAPI
                         Prowlar API key (default: null)
