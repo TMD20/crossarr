@@ -145,7 +145,7 @@ Third interval is at 2 hours. At this time program should be done running, so th
 | ------------- | ------------- |
 | /logs|Directory for logfiles |
 | /output|Directory for storing torrent files |
-
+| /config|Directory with config.json|
 
 
 ## Docker Run
