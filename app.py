@@ -40,7 +40,7 @@ def run(userargs,block=False):
             #Fix Later to use rich if possible
             print(E)
             console.logging.info(str(E))
-       #probably a cash
+       #probably a crash
         else:
             print(E)
             lock=os.path.join(defaults.getHomeDir(),f"{userargs.clientname}.lock")
