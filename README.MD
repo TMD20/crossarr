@@ -113,6 +113,8 @@ Only 1 instance can run per lock file name, change --clientname if you want to r
 If instance is running and next run interval time passes, that interval will be skipped. 
 Program will have to wait for next interval when it finishes
 
+44640 Minutes=31 days
+
 ### Example
 
 #### Times
