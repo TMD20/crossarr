@@ -115,7 +115,7 @@ As a general note you need to make an empty file/user an existing one if you wan
         - TZ=enter for valid logs
       volumes:
           - /home/torrents/crossarr/config.json:/config/config.json
-          - /home/torrents/crossarr/logs/radarr2160.log:/logs/radarr.log
+          - /home/torrents/crossarr/logs/:/logs/
           - /home/Downloads/Torrents:/output
       command: radarr
       restart: always

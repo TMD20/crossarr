@@ -1,10 +1,14 @@
 from distutils.log import error
 from jsonargparse import ArgumentParser, ActionConfigFile
+from jsonargparse.typing import restricted_number_type,create_type
 import jsonargparse
 import os
 import pathlib
 
+
 Docker_KEY = os.environ.get('CROSSARR_DOCKER', False)
+
+interval= restricted_number_type('interval', int, [('>=', 0), ('<=', 44640)])
 def setupConfig(p):
     if not Docker_KEY:
         defaultconfigPath = os.path.join(pathlib.Path(os.path.realpath(__file__)).parents[1],"config" ,"config.json")
@@ -14,19 +18,29 @@ def setupConfig(p):
         defaultconfigPath ="/config/config.json"
         p.default_config_files = [defaultconfigPath]
     return p
-def setupDir(r):
+
+def post(r):
+    setupLogs(r)
+    setupOutput(r)
+    setupLock(r)
+    return r
+def setupLogs(r):
+    clientname=os.environ.get('clientname') or r.log or {r.subcommand}.log
+    r.log=f"./logs/{clientname}"
+    return r
+def setupOutput(r):
     if Docker_KEY:
-        r.log=f"/logs/{r.subcommand}.log"
         r[r.subcommand].folder="/output"
     return r
-  
+def setupLock(r):
+    r.lock= os.path.join(pathlib.Path(os.path.realpath(__file__)).parents[1],r.lock)
+    return r
 
 def getArgs():
     p = ArgumentParser(prog="crossarr")
     p=setupConfig(p)
- 
   
-    p.add_argument('-l', '--log', help="Where to save log file")
+    p.add_argument('-l', '--log', help="name of log file")
     p.add_argument('-v', '--loglevel', help="what level to set log to flexible case-senstivity main options are [DEBUG,INFO,OFF]",choices=["Debug","DEBUG","debug","INFO","info","Info","off","OFF","Off"],default="OFF")
     p.add_argument("-r","--rows",help="Advanced Feature to set how many table rows to render for Messages",default=5)
     p.add_argument("-t","--threshold",type=int,default=1,help="The max size difference \% a match can have")
@@ -40,6 +54,9 @@ def getArgs():
     imported= Releases completed, and imported into library
     """
     )
+    p.add_argument("-lk","--lock",default="crossarr.lock",help="File Lock to prevent multiple instances")
+    p.add_argument("-it","--interval",default=0,help="Run the script every x minutes, 0 turns off",type=interval,metavar="[0-44640]")
+
     p.add_argument("-i",'--indexers', nargs="+",help="Names of Indexer\nUses Regex to Match Names")
 
     radarr=ArgumentParser()
@@ -56,7 +73,7 @@ def getArgs():
     subcommands.add_subcommand('radarr', radarr)
     subcommands.add_subcommand('sonarr', sonarr)
 
-
+   
     r=p.parse_args()
     subspace=r.get(r.subcommand)
     if not subspace.api:
@@ -65,7 +82,7 @@ def getArgs():
         raise jsonargparse.ParserError(f"{r.subcommand}.folder","can't be null")
     if not subspace.url:
         raise jsonargparse.ParserError(f"{r.subcommand}.url","can't be null")    
-    return setupDir(r)
+    return post(r)
     
   
     
