@@ -22,6 +22,7 @@ def run_threaded(job_func,userargs):
 def run(userargs,block=False):
     try:
         with portalocker.Lock(os.path.join(defaults.getHomeDir(),f"{userargs.clientname}.lock"),fail_when_locked=block, timeout=1000) as fh:
+            console.logging.info(f"Start RUN")
             console.mainConsole.print(console.Panel(f"Looking through {userargs.subcommand} for matches",style=console.normal_header_style))
             #Create Folder for log and torrents
             if userargs.subcommand=="sonarr":
@@ -32,15 +33,21 @@ def run(userargs,block=False):
                 pathlib.Path(userargs.radarr.folder).mkdir(parents=True, exist_ok=True)
                 radarrObj=radarrAPI.Radarr()
                 radarrObj.process()
+            console.logging.info(f"Finish RUN")
+
     except Exception as E:
         if isinstance(E,portalocker.exceptions.AlreadyLocked): 
             #Fix Later to use rich if possible
             print(E)
             console.logging.info(str(E))
-
+       #probably a cash
         else:
             print(E)
-            os.remove(userargs.lock)
+            lock=os.path.join(defaults.getHomeDir(),f"{userargs.clientname}.lock")
+            if os.path.exists(lock):
+                os.remove(lock)
+            console.logging.info(f"Finish RUN")
+
       
 def main():
     logger.setupLogging()

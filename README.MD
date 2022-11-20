@@ -113,7 +113,7 @@ Only 1 instance can run per lock file name, change --clientname if you want to r
 If instance is running and next run interval time passes, that interval will be skipped. 
 Program will have to wait for next interval when it finishes
 
-44640 Minutes=31 days
+Max Value:44640 Minutes=31 days
 
 ### Example
 
@@ -123,7 +123,7 @@ Program will have to wait for next interval when it finishes
 
 First run will be at 0
 Since second interval is at 60 minutes and program is still running that will be skipped
-Third interval is at 2 hours. At this time program should be done running, so this will be ran
+Third interval is at 2 hours. At this time program should be done running, so this interval will be ran
 
 ## LogFiles
 
