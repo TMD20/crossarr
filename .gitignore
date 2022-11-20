@@ -7,3 +7,5 @@ request.cache
 *.text
 *.txt
 *.json
+*.lock
+/logs
