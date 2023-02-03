@@ -74,6 +74,7 @@ class Sonarr(Base):
                         self.overallProgress.update(self.releaseTask,advance=1)
                         continue
                 self._downloadItem(release)
+
                 self.overallProgress.update(self.releaseTask,advance=1)
   
             i=i+1
@@ -83,26 +84,18 @@ class Sonarr(Base):
 
             
     def _findMatchinHistory(self, release, seasonHistory,epCount): 
-            title=release["title"]
-            size=int(release["size"])
-            releaseData=guessit(title,"")
-            releaseGroup = releaseData.get("release_group")
-            resolution = releaseData.get("screen_size")
-            quality=releaseData.get("source")
-            resolution = releaseData.get("screen_size")
-            videoCodec = releaseData.get("video_codec")
-            videoProfile = releaseData.get("video_profile")
+            filtered=list(filter(lambda x: sonarrFilter.filterTVReleases(x,release,epCount),seasonHistory))
+            if max(len(sonarrFilter.matchBySizeSeason(filtered,int(release["size"]))) ,\
+            len(sonarrFilter.matchBySizeEpisodes(filtered,int(release["size"]))))==epCount:
+                console.logging.info(f"Release Matches {release['title']}")
+                return True
+            return False
+
 
         
 
-            filtered = sonarrFilter.matchByTitle(seasonHistory, releaseGroup,title)
-            filtered = sonarrFilter.matchQuality(filtered,quality)
-            filtered = sonarrFilter.matchVideo(filtered, resolution,videoCodec,videoProfile)
-            filtered = sonarrFilter.matchSpecial(filtered, title)
-            filteredSeason=sonarrFilter.matchBySizeSeason(filtered,size,self.threshold)
-            filteredEpisode=sonarrFilter.matchBySizeEpisodes(filtered,size,self.threshold)
-            if (len(max([filteredEpisode,filteredSeason],key=lambda x:len(x)))/epCount)>.7:
-                    return True
+    
+        
    
     ############################################################################
     #
@@ -172,7 +165,7 @@ class Sonarr(Base):
             self.successReq=self.successReq+1
         data=req.json()
         data=sonarrFilter.matchSeasonNum(data,num)
-        data=sonarrFilter.matchDate(data,self.days,self.currDate)
+        data=list(filter(lambda x:sonarrFilter.matchDate(self.currDate,x),data))
    
         
         return data       

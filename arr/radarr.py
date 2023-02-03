@@ -35,31 +35,16 @@ class Radarr(Base):
         releasesList = self._getReleases(f"{movie['title']} {movie['year']}")
         self.overallProgress.update(self.releaseTask,description=f"",total=len(downloadList))
         for ele in downloadList:
+            console.logging.info(f"Searching for match {ele}")
             self.overallProgress.update(self.releaseTask,description=f"{movie['title']} Progress: Looking for matching releases for {ele['title']}")
             matchingReleases=self._verifyMatches(releasesList,ele)
-            for release in matchingReleases:
+            for release in matchingReleases:            
                 self._downloadItem(release)
             self.overallProgress.update(self.releaseTask,description=f"Current Movie Progress: ",advance=1)
 
-      
-  
     def _verifyMatches(self,releasesList,prevDownload):
-        title=prevDownload["title"]
-        size=int(prevDownload["size"])
-        prevDownloadInfo=guessit(title)
-        releaseGroup = prevDownloadInfo.get("release_group")
-        resolution = prevDownloadInfo.get("screen_size")
-        quality=prevDownloadInfo.get("source")
-        resolution = prevDownloadInfo.get("screen_size")
-        videoCodec = prevDownloadInfo.get("video_codec")
-        videoProfile = prevDownloadInfo.get("video_profile")
-       
-    
-        filtered = radarrFilter.matchByTitle(releasesList, releaseGroup,title)
-        filtered = radarrFilter.matchQuality(filtered,quality)
-        filtered = radarrFilter.matchVideo(filtered, resolution,videoCodec,videoProfile)
-        filtered = radarrFilter.matchSpecial(filtered, title) 
-        filtered=radarrFilter.matchBySize(filtered,size,self.threshold)
+        filtered=list(filter(lambda x: radarrFilter.filterMovieReleases(x,prevDownload),releasesList))
+        console.logging.info(f"Matches: {filtered}")
         return filtered  
 
     ###################################################################
@@ -131,7 +116,8 @@ class Radarr(Base):
             console.logging.info(msg)
             self.successReq=self.successReq+1
         data=req.json()
-        data=radarrFilter.matchDate(data,self.days,self.currDate)        
+     
+        data=list(filter(lambda x: radarrFilter.matchDate(self.currDate,x),data))
         return data
 
 

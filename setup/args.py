@@ -36,9 +36,10 @@ def getArgs():
     p.add_argument('-v', '--loglevel', help="what level to set log to flexible case-senstivity main options are [DEBUG,INFO,OFF]",type=restricted_string_type('LOG Names', '(off|debug|info)'),default="OFF")
     p.add_argument("-r","--rows",help="Advanced Feature to set how many table rows to render for Messages")
     p.add_argument("-t","--threshold",type=int,default=1,help="The max size difference \% a match can have")
-    p.add_argument('-d', '--days', type=int,default=99999999999999999999,help="Max Age of a release in days")
+    p.add_argument('-y', '--days', type=int,default=99999999999999999999,help="Max Age of a release in days")
     p.add_argument('-a', '--prowlarrapi', help="Prowlar API key")
     p.add_argument('-p', '--prowlarrurl', help="Prowlar URL")
+    p.add_argument('-d', '--dryrun', help="Don't download matches", action='store_true')
     p.add_argument("-f","--flag", choices=["grabbed", "imported"],default="imported",
     help= \
     """ 

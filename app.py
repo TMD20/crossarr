@@ -28,10 +28,12 @@ def run(userargs,block=False):
             if userargs.subcommand=="sonarr":
                 pathlib.Path(userargs.sonarr.folder).mkdir(parents=True, exist_ok=True)
                 sonarrObj=sonarrAPI.Sonarr()
+                sonarrObj.dryrun=userargs["dryrun"]
                 sonarrObj.process()
             else:
                 pathlib.Path(userargs.radarr.folder).mkdir(parents=True, exist_ok=True)
                 radarrObj=radarrAPI.Radarr()
+                radarrObj.dryrun=userargs["dryrun"]
                 radarrObj.process()
             console.logging.info(f"Finish RUN")
 

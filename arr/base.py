@@ -23,6 +23,7 @@ class Base():
         self.session=session
         self.prowlarrurl=self.args.prowlarrurl
         self.prowlarrapi=self.args.prowlarrapi
+        self.dryrun=None
     
         
 
@@ -32,7 +33,7 @@ class Base():
 #Process Functions
 #####################################################################
     
-    def process(self):
+    def process(self,dryrun=False):
         self._getIndexerIDs()
         self._setConsole()
         self._setArrDataNormalizers()
@@ -70,7 +71,11 @@ class Base():
         basename=self.titleFixer(basename)
         finalURL=release["downloadUrl"]
         data = session.get(finalURL)
-        if data.status_code!=200:
+        if self.dryrun:
+            msg=f"Dry Run: [{release['indexer']}] {release['title']}.torrent"
+            self.messageTable.add_row("Download",msg,style="green")
+            console.logging.info(msg)
+        elif data.status_code!=200:
             msg=f"Request to {finalURL} was not succesful with status code {data.status_code}"
             self.messageTable.add_row("Error",msg,style="red")
             console.logging.error(msg)
