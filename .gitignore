@@ -6,6 +6,6 @@ request.cache
 *.log
 *.text
 *.txt
-*.json
+config.json
 *.lock
 /logs

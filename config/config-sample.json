@@ -1,0 +1,37 @@
+{
+  "threshold": 1,
+  "rows": 5,
+  "logfile": "example.txt",
+  "loglevel": "DEBUG",
+  "indexers": [
+    "blutopia",
+    "beyondhd",
+    "uhdbits",
+    "hdtorrents",
+    "hd-torrents",
+    "hd-space",
+    "hdspace",
+    "animebyte",
+    "asian",
+    "totheglory",
+    "ttg",
+    "chdbits",
+    "morethantv",
+    "privatehd"
+  ],
+  "prowlarrapi": "my key",
+  "prowlarrurl": "http://url",
+
+  "flag": "imported",
+  "days": 9999999999999,
+  "radarr": {
+    "api": "my key for radarr",
+    "url": "http://url",
+    "folder": "/home/user/radarr/torrents"
+  },
+  "sonarr": {
+    "api": "my key for sonar",
+    "url": "http://dsds",
+    "folder": "/home/user/sonarr/torrents"
+  }
+}
