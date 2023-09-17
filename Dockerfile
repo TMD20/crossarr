@@ -6,6 +6,7 @@ COPY /arr /app/arr/
 COPY /setup /app/setup/
 COPY *.py /app/
 COPY requirements.txt /app/requirements.txt
+RUN pip3.11 install "cython<3.0.0" && pip install --no-build-isolation pyyaml==6.0
 RUN pip3.11 install -r /app/requirements.txt
 
 RUN mkdir /config
