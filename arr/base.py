@@ -121,13 +121,28 @@ class Base():
         indexerNames = []
         req=self.session.get(indexerURL,params={"apikey":self.prowlarrapi})
         allIndexer=req.json()
-        for indexer in allIndexer:
-            for ele in self.userindexers:
-                if re.search(ele, indexer["name"], re.IGNORECASE):
+       
+        for ele in self.userindexers:
+            for indexer in allIndexer:
+                if indexer["name"].lower()==ele.lower():
+                    indexerIDs.insert(0,indexer["id"])
+                    indexerNames.insert(0,indexer["name"])
+                    break
+                elif re.search(ele, indexer["name"], re.IGNORECASE):
                     indexerIDs.append(indexer["id"])
                     indexerNames.append(indexer["name"])
         self.indexerIDs= list(set(indexerIDs))
         self.indexerNames = list(set(indexerNames))
+        console.logging.info(f"allIndexers: {allIndexer}")
+        console.logging.info(f"indexersIDs: {indexerIDs}")
+        console.logging.info(f"indexersNames: {indexerNames}")
+        print(indexerIDs,indexerNames)
+
+        if len(indexerNames)==0:
+            print("No indexers")
+            quit()
+    
+   
 
 
     def _setArrDataNormalizers(self):
