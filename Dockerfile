@@ -6,7 +6,7 @@ COPY /arr /app/arr/
 COPY /setup /app/setup/
 COPY *.py /app/
 COPY requirements.txt /app/requirements.txt
-RUN pip3.10 install -r /app/requirements.txt
+RUN pip3.11 install -r /app/requirements.txt
 
 RUN mkdir /config
 RUN mkdir /logs
